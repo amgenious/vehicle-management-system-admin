@@ -1,4 +1,5 @@
 import ChartSystem from '@/components/dashboard/overview/chartsystem'
+import RecentTable from '@/components/dashboard/overview/recenttable'
 import TileCards from '@/components/dashboard/overview/tilecards'
 import React from 'react'
 
@@ -9,6 +10,7 @@ const Dashboard = () => {
      <div className='p-3 h-full flex flex-col gap-5'>
         <TileCards />
         <ChartSystem />
+        <RecentTable />
      </div>
     </div>
   )
