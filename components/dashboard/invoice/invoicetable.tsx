@@ -13,8 +13,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
   Table,
@@ -28,46 +26,37 @@ import {
 const data: Booking[] = [
   {
     id: "m5gr84i9",
-    reporting_time: '9:00AM',
-    status: "success",
-    email: "ken99@yahoo.com",
+    date: '1-Jan-24',
     name:"Henry",
+    job_number:"1000202020",
     vehicle_registration_number:"GM 18394-19",
-    vehicle_model:"Camry",
-    manufacturer:"Toyota",
-    fault:"Brakes not sticking well",
-    job_number:10100002,
-    phone_number:"0242365073"
+    mileage:127888,
+    SA:"Engr. Divine Bedzrah",
+    Manager:"Engr. Dr. Kwame Anane-Fenin",
+    vehicle_model:"Toyota Corolla",
+    chassis_number:"56768g768y688y88980j",
+    item_used:"Engine Oil",
+    quantity:1,
+    unit_price:2200,
+    net_total:4200,
   },
- 
-  {
-    id: "m5gr84i9",
-    reporting_time: '9:00AM',
-    status: "success",
-    email: "ken99@yahoo.com",
-    name:"Jeff",
-    vehicle_registration_number:"GM 18394-19",
-    vehicle_model:"Camry",
-    manufacturer:"Toyota",
-    fault:"Brakes not sticking well",
-    job_number:10100002,
-    phone_number:"0242365073"
-  },
- 
 ]
 
 export type Booking = {
   id: string
-  reporting_time: string
-  status: "pending" | "processing" | "success" | "failed"
-  email: string
-  name: string
-  vehicle_registration_number: string
-  manufacturer: string
-  vehicle_model: string
-  fault: string
-  job_number: number
-  phone_number: string
+  date:string
+  name:string
+  job_number:string
+  vehicle_registration_number:string
+  mileage:number
+  SA:string
+  Manager:string
+  vehicle_model:string
+  chassis_number:string
+  item_used:string
+  quantity:number
+  unit_price:number
+  net_total:number
 }
 
 export const columns: ColumnDef<Booking>[] = [
@@ -78,29 +67,14 @@ export const columns: ColumnDef<Booking>[] = [
             <div className="capitalize">{row.getValue("name")}</div>
         ),
     },
-    {
-        accessorKey: "email",
-        header: ({ column }) => {
-            return (
-                <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-          Email
-         
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-},
 {
-    accessorKey: "phone_number",
-    header: "Phone Number",
+    accessorKey: "date",
+    header: "Date",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("phone_number")}</div>
+      <div className="capitalize">{row.getValue("date")}</div>
     ),
   },
-  {
+{
     accessorKey: "job_number",
     header: "Job Number",
     cell: ({ row }) => (
@@ -108,43 +82,78 @@ export const columns: ColumnDef<Booking>[] = [
     ),
   },
   {
-    accessorKey: "vehicle_registration_number",
-    header: "Vehicle Registration Number",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("vehicle_registration_number")}</div>
-    ),
-  },
+      accessorKey: "vehicle_registration_number",
+      header: "Vehicle Registration Number",
+      cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("vehicle_registration_number")}</div>
+        ),
+    },
+    {
+        accessorKey: "mileage",
+        header: "Mileage",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("mileage")}</div>
+        ),
+      },
+    {
+      accessorKey: "SA",
+      header: "SA",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("SA")}</div>
+      ),
+    },
 {
-  accessorKey: "manufacturer",
-  header: "Manufacturer",
+  accessorKey: "Manager",
+  header: "Manager",
   cell: ({ row }) => (
-    <div className="capitalize">{row.getValue("manufacturer")}</div>
+    <div className="capitalize">{row.getValue("Manager")}</div>
   ),
 },
 {
   accessorKey: "vehicle_model",
-  header: "Vehicle Model",
+  header: "Model/Make",
   cell: ({ row }) => (
     <div className="capitalize">{row.getValue("vehicle_model")}</div>
   ),
 },
 {
-  accessorKey: "status",
-  header: "Status",
+  accessorKey: "chassis_number",
+  header: "Chassis Number",
   cell: ({ row }) => (
-    <div className="capitalize">{row.getValue("status")}</div>
+    <div className="uppercase">{row.getValue("chassis_number")}</div>
   ),
 },
 {
-  accessorKey: "fault",
-  header: "Fault",
-  cell: ({ row }) => (
-    <div className="capitalize">{row.getValue("fault")}</div>
-  ),
-},
+    accessorKey: "item_used",
+    header: "Item Used",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("item_used")}</div>
+    ),
+  },
+  {
+    accessorKey: "quantity",
+    header: "Quantity",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("quantity")}</div>
+    ),
+  },
+  {
+    accessorKey: "unit_price",
+    header: "Unit Price",
+    cell: ({ row }) => (
+      <div className="capitalize">Ghc {row.getValue("unit_price")}</div>
+    ),
+  },
+  {
+    accessorKey: "net_total",
+    header: "Net total",
+    cell: ({ row }) => (
+      <div className="capitalize">Ghc {row.getValue("net_total")}</div>
+    ),
+  },
 ]
 
-export function DataTableDemo() {
+export function InvoiceTable() {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
