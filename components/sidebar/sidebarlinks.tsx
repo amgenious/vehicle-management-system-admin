@@ -29,7 +29,7 @@ const pathname = usePathname();
             Dashboard
           </Link>
           <Link
-            href="/dashboard/files"
+            href="/dashboard/bookings"
             className={clsx("flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
             {
               'bg-primary text-white text-muted': pathname === "/dashboard/bookings",
@@ -41,7 +41,7 @@ const pathname = usePathname();
             Bookings
           </Link>
           <Link
-            href="/dashboard/files"
+            href="/dashboard/servicetracker"
             className={clsx("flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
             {
               'bg-primary text-white text-muted': pathname === "/dashboard/servicetracker",
@@ -53,7 +53,7 @@ const pathname = usePathname();
             Service Tracker
           </Link>
           <Link
-            href="/dashboard/files"
+            href="/dashboard/costsharing"
             className={clsx("flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
             {
               'bg-primary text-white text-muted': pathname === "/dashboard/costsharing",
@@ -65,7 +65,7 @@ const pathname = usePathname();
             Cost Sharing
           </Link>
           <Link
-            href="/dashboard/files"
+            href="/dashboard/invoice"
             className={clsx("flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
             {
               'bg-primary text-white text-muted': pathname === "/dashboard/invoice",
