@@ -1,6 +1,7 @@
 "use client"
 
-import * as React from "react"
+import { db } from "@/lib/firebaseConfig";
+import React, { useState, useEffect } from 'react'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -23,6 +24,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  collection,
+  query,
+  onSnapshot,
+  limit,
+  where,
+} from "firebase/firestore";
+import { Loader } from 'lucide-react';
 
 const data: Booking[] = [
   {
@@ -126,6 +135,34 @@ export const columns: ColumnDef<Booking>[] = [
 ]
 
 export function ServiceTrackingTable() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const colRef = collection(db, "servicetracker");
+  useEffect(() => {
+    try {
+        const q1 = query(
+            colRef,
+        );
+        const unsubscribeSnapshot = onSnapshot(q1, (snapShot) => {
+            setLoading(true);
+            setData([]);
+            let list:any= [];
+            snapShot.docs.forEach((doc) => {
+              list.push({ id: doc.id, ...doc.data() });
+            });
+            setData(list);
+            console.log(list)
+            setLoading(false);
+        });
+        return () => {
+            unsubscribeSnapshot();
+        };
+
+    } catch (error) {
+        setLoading(false);
+        console.error('Error fetching data:', error);
+    }
+}, []);
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -152,23 +189,30 @@ export function ServiceTrackingTable() {
       rowSelection,
     },
   })
-
+  type Timestamp = {
+    seconds: number;
+    nanoseconds: number;
+  };
+  const formatDate = (timestamp: Timestamp): string => {
+    const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+    return date.toUTCString(); // or use any other format you prefer
+  };
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <Input
+        {/* <Input
           placeholder="Client's Name..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
-        />
+        /> */}
       </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
+            {/* {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
@@ -183,10 +227,18 @@ export function ServiceTrackingTable() {
                   )
                 })}
               </TableRow>
-            ))}
+            ))} */}
+             <TableRow>
+    <TableHead>Client Name</TableHead>
+    <TableHead>Job Number</TableHead>
+    <TableHead>Phone Number</TableHead>
+    <TableHead>Serviced Date</TableHead>
+    <TableHead>Next Service Date</TableHead>
+    <TableHead>Employee Email</TableHead>
+  </TableRow>
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {/* {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -211,7 +263,26 @@ export function ServiceTrackingTable() {
                   No results.
                 </TableCell>
               </TableRow>
-            )}
+            )} */}
+              {
+                         data?.length > 0 && loading==false ?  (
+                            data.map((item:any) => (
+                              <TableRow key={item.id} className="">
+                              <TableCell className="font-medium">{item.Client_name}</TableCell>
+                              <TableCell>
+                                {item.Job_number}
+                              </TableCell>
+                              <TableCell>{item.Phone_number}</TableCell>
+                              <TableCell>{formatDate(item.Service_date)}</TableCell>
+                              <TableCell>{item.Next_Service_date}</TableCell>
+                              <TableCell>{item.employeeEmail}</TableCell>
+                            </TableRow>
+                            ))
+                        ):loading ? (<Loader size={40} className="animate-spin ml-2 text-primary text-center" />
+                      ) : (
+                        <p>No Data Available</p>
+                      )
+                    }
           </TableBody>
         </Table>
       </div>

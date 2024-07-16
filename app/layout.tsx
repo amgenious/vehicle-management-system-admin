@@ -26,25 +26,25 @@ export default function RootLayout({
 }>) {
   return (
   
-    <html lang="en">
-      <body className={poppins.className}>
-        {children}
-        </body>
-    </html>
- 
-    // <ClerkProvider>
     // <html lang="en">
-    //   <body className={inter.className}>
-    //     <SignedOut>
-    //       <div className="flex h-screen justify-center items-center">
-    //         <SignIn routing="hash" />
-    //       </div>
-    //     </SignedOut>
-    //     <SignedIn>
+    //   <body className={poppins.className}>
     //     {children}
-    //     </SignedIn>
     //     </body>
     // </html>
-    // </ClerkProvider>
+ 
+    <ClerkProvider>
+    <html lang="en">
+      <body className={poppins.className}>
+        <SignedOut>
+          <div className="flex h-screen justify-center items-center">
+            <SignIn routing="hash" />
+          </div>
+        </SignedOut>
+        <SignedIn>
+        {children}
+        </SignedIn>
+        </body>
+    </html>
+    </ClerkProvider>
   );
 }

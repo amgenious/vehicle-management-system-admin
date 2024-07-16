@@ -1,6 +1,7 @@
 "use client"
 
-import * as React from "react"
+import { db } from "@/lib/firebaseConfig";
+import React, { useState, useEffect } from 'react'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -24,6 +25,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  collection,
+  query,
+  onSnapshot,
+  limit,
+  where,
+} from "firebase/firestore";
+import { Loader } from 'lucide-react';
 
 const data: Booking[] = [
   {
@@ -145,7 +154,35 @@ export const columns: ColumnDef<Booking>[] = [
 ]
 
 export function DataTableDemo() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const colRef = collection(db, "bookings");
   const [sorting, setSorting] = React.useState<SortingState>([])
+  useEffect(() => {
+    try {
+        const q1 = query(
+            colRef,
+        );
+        const unsubscribeSnapshot = onSnapshot(q1, (snapShot) => {
+            setLoading(true);
+            setData([]);
+            let list:any= [];
+            snapShot.docs.forEach((doc) => {
+              list.push({ id: doc.id, ...doc.data() });
+            });
+            setData(list);
+            console.log(list)
+            setLoading(false);
+        });
+        return () => {
+            unsubscribeSnapshot();
+        };
+
+    } catch (error) {
+        setLoading(false);
+        console.error('Error fetching data:', error);
+    }
+}, []);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
@@ -175,14 +212,14 @@ export function DataTableDemo() {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <Input
+        {/* <Input
           placeholder="Client's Name..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
-        />
+        /> */}
       </div>
       <div className="rounded-md border">
         <Table>
@@ -205,7 +242,7 @@ export function DataTableDemo() {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {/* {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -230,7 +267,27 @@ export function DataTableDemo() {
                   No results.
                 </TableCell>
               </TableRow>
-            )}
+            )} */}
+             {
+                         data?.length > 0 && loading==false ?  (
+                            data.map((item:any) => (
+                                <TableRow key={item.id} className=''>
+                                    <TableCell className="font-medium">{item.data.Job_number}</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell>{item.data.name}</TableCell>
+                                    <TableCell>{item.data.phonenumber}</TableCell>
+                                    <TableCell>{item.data.carnumber}</TableCell>
+                                    <TableCell>{item.data.manufacturer}</TableCell>
+                                    <TableCell>{item.data.model}</TableCell>
+                                    <TableCell>{item.data.status}</TableCell>
+                                    <TableCell className="truncate">{item.data.faultdescription}</TableCell>
+                                </TableRow>
+                            ))
+                        ):loading ? (<Loader size={40} className="animate-spin ml-2 text-primary text-center" />
+                      ) : (
+                        <p>No Data Available</p>
+                      )
+                    }
           </TableBody>
         </Table>
       </div>

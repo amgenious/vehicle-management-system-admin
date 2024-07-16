@@ -33,7 +33,8 @@ const RecentTable = () => {
     </TableRow>
   </TableHeader>
   <TableBody>
-    <TableRow>
+    <p>No Data Available</p>
+    {/* <TableRow>
       <TableCell className="font-medium">INV001</TableCell>
       <TableCell>Paid</TableCell>
       <TableCell>Credit Card</TableCell>
@@ -48,7 +49,7 @@ const RecentTable = () => {
       <TableCell></TableCell>
       <TableCell></TableCell>
       <TableCell className="text-right">$250.00</TableCell>
-    </TableRow>
+    </TableRow> */}
  
   </TableBody>
 </Table>

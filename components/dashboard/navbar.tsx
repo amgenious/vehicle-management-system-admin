@@ -3,6 +3,7 @@ import React from 'react'
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { usePathname } from "next/navigation";
+import { SignOutButton } from "@clerk/nextjs";
 import clsx from "clsx";
 import {
     AudioWaveform,
@@ -92,12 +93,14 @@ const NavBar= () => {
             </Link>
           </nav>
           <div className="mt-auto">
-          <Button>
+          <SignOutButton>
+            <Button>
                 <LogOut />
                 <p className='ml-3'>
                 Logout
                 </p>
             </Button>
+           </SignOutButton>
           </div>
         </SheetContent>
       </Sheet>
