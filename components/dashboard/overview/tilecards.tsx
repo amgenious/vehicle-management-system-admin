@@ -2,7 +2,7 @@
 import { Card, CardHeader, CardTitle} from '@/components/ui/card'
 import { AudioWaveform, Banknote, ClipboardPenLine, Package } from 'lucide-react'
 import React,{useState,useEffect} from 'react'
-import {auth,db} from "@/lib/firebaseConfig"
+import {db} from "@/lib/firebaseConfig"
 import {
   collection,
   query,
@@ -15,9 +15,11 @@ const TileCards = () => {
   const colRef = collection(db, "bookings");
   const colRef1 = collection(db, "customerservicereport");
   const colRef2 = collection(db, "servicetracker");
+  const colRef3 = collection(db, "invoice");
   const [bookings, setBookings] = useState([]);
   const [customerservicereports, setCustomerServiceReports] = useState([]);
   const [servicetrackers, setServiceTrackers] = useState([]);
+  const [invoice, setInvoice] = useState([]);
   useEffect(()=>{
     try{
       const q1 = query(
@@ -28,6 +30,9 @@ const TileCards = () => {
       );
       const q3 = query(
         colRef2,
+      );
+      const q4 = query(
+        colRef3,
       );
       const unsubscribeSnapshot = onSnapshot(q1, (snapShot) => {
         let list:any = [];
@@ -50,10 +55,18 @@ const TileCards = () => {
         });
         setServiceTrackers(list.length);
       });
+      const unsubscribeSnapshot3 = onSnapshot(q4, (snapShot) => {
+        let list:any = [];
+        snapShot.docs.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        setInvoice(list.length);
+      });
       return () => {
         unsubscribeSnapshot();
         unsubscribeSnapshot1();
         unsubscribeSnapshot2();
+        unsubscribeSnapshot3();
       };
     }catch(errors){
       console.log(errors)
@@ -98,7 +111,7 @@ const TileCards = () => {
         <Card className="p-2 cursor-pointer">
       <CardHeader className="flex flex-col items-end justify-between gap-3 space-y-0 pb-2">
         <CardTitle className="text-sm font-medium"> Invoices</CardTitle>
-        <div className="text-2xl font-bold text-left">0</div>
+        <div className="text-2xl font-bold text-left">{invoice}</div>
       </CardHeader>
     </Card>
     <div className='absolute top-0 left-2 p-5 bg-orange-400 rounded-md'>

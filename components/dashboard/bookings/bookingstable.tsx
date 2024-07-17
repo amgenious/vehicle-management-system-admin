@@ -223,64 +223,31 @@ export function DataTableDemo() {
       </div>
       <div className="rounded-md border">
         <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  )
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Job Number</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Client Name</TableHead>
+            <TableHead>Phone Number</TableHead>
+            <TableHead>Vehicle Registration Number</TableHead>
+            <TableHead>Manufacturer</TableHead>
+            <TableHead>Model</TableHead>
+            <TableHead>Fault</TableHead>
+          </TableRow>
+        </TableHeader>
           <TableBody>
-            {/* {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )} */}
              {
                          data?.length > 0 && loading==false ?  (
                             data.map((item:any) => (
                                 <TableRow key={item.id} className=''>
-                                    <TableCell className="font-medium">{item.data.Job_number}</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell>{item.data.name}</TableCell>
-                                    <TableCell>{item.data.phonenumber}</TableCell>
-                                    <TableCell>{item.data.carnumber}</TableCell>
-                                    <TableCell>{item.data.manufacturer}</TableCell>
-                                    <TableCell>{item.data.model}</TableCell>
-                                    <TableCell>{item.data.status}</TableCell>
-                                    <TableCell className="truncate">{item.data.faultdescription}</TableCell>
+                                    <TableCell className="font-medium">{item.Job_number}</TableCell>
+                                    <TableCell>{item.status}</TableCell>
+                                    <TableCell>{item.name}</TableCell>
+                                    <TableCell>{item.phonenumber}</TableCell>
+                                    <TableCell>{item.carnumber}</TableCell>
+                                    <TableCell>{item.manufacturer}</TableCell>
+                                    <TableCell>{item.model}</TableCell>
+                                    <TableCell className="truncate">{item.faultdescription}</TableCell>
                                 </TableRow>
                             ))
                         ):loading ? (<Loader size={40} className="animate-spin ml-2 text-primary text-center" />
