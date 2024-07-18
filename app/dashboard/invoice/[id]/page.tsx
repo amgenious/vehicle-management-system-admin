@@ -117,9 +117,6 @@ const InvoiceDetails = ({params}:any) => {
         </TableBody>
       </Table>
       </div>
-      <div>
-        <Button>Get PDF</Button>
-      </div>
     </div>
       )
     }
