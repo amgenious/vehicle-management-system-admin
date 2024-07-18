@@ -6,13 +6,14 @@ import {
   query,
   onSnapshot,
   limit,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
-import { Loader } from 'lucide-react';
+import { Delete, DeleteIcon, Loader, Trash } from 'lucide-react';
 import Link from "next/link";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -25,7 +26,7 @@ const RecentTable = () => {
   const colRef = collection(db, "invoice");
   useEffect(() => {
     try {
-      const q1 = query(colRef,limit(5));
+      const q1 = query(colRef,limit(3));
       const unsubscribeSnapshot = onSnapshot(q1, (snapShot) => {
         setLoading(true);
         setData([]);
@@ -44,6 +45,14 @@ const RecentTable = () => {
       console.error("Error fetching data:", error);
     }
   }, []);
+  const deleteItem = async (id:any) => {
+    try {
+      await deleteDoc(doc(db, "invoice", id));
+      setData((prevData) => prevData.filter((items:any) => items.id !== id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className='p-3'>
       <p className='text-xl font-medium'>A list of your recent invoices.</p>
@@ -57,6 +66,7 @@ const RecentTable = () => {
     <TableHead>Remarks</TableHead>
     <TableHead>Net Total</TableHead>
     <TableHead>More Details</TableHead>
+    <TableHead>Action</TableHead>
   </TableRow>
 </TableHeader>
 <TableBody>
@@ -75,6 +85,12 @@ const RecentTable = () => {
                   <Link href={`dashboard/invoice/${item.id}`}>
                     Details
                   </Link>
+                </TableCell>
+                <TableCell>
+                  <Trash 
+                  className="cursor-pointer text-red-700"
+                  onClick={(id) => deleteItem(item.id)}
+                  />
                 </TableCell>
               </TableRow>
             ))

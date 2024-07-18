@@ -7,8 +7,8 @@ import {
     Home,
     Package,
     AudioWaveform,
-    Banknote,
-    ClipboardPenLine
+    ClipboardPenLine,
+    MonitorCheck
   } from "lucide-react"
 
 const SideBarLinks = () => {
@@ -61,7 +61,7 @@ const pathname = usePathname();
             ) 
             }
           >
-            <Banknote className="h-4 w-4" />
+            <MonitorCheck className="h-4 w-4" />
             Cost Sharing
           </Link>
           <Link

@@ -1,6 +1,6 @@
 'use client'
 import { Card, CardHeader, CardTitle} from '@/components/ui/card'
-import { AudioWaveform, Banknote, ClipboardPenLine, Package } from 'lucide-react'
+import { AudioWaveform, Banknote, ClipboardPenLine, MonitorCheck, Package } from 'lucide-react'
 import React,{useState,useEffect} from 'react'
 import {db} from "@/lib/firebaseConfig"
 import {
@@ -16,10 +16,12 @@ const TileCards = () => {
   const colRef1 = collection(db, "customerservicereport");
   const colRef2 = collection(db, "servicetracker");
   const colRef3 = collection(db, "invoice");
+  const colRef4 = collection(db, "costsharing");
   const [bookings, setBookings] = useState([]);
   const [customerservicereports, setCustomerServiceReports] = useState([]);
   const [servicetrackers, setServiceTrackers] = useState([]);
   const [invoice, setInvoice] = useState([]);
+  const [costsharing, setCostSharing] = useState([]);
   useEffect(()=>{
     try{
       const q1 = query(
@@ -34,6 +36,9 @@ const TileCards = () => {
       const q4 = query(
         colRef3,
       );
+      const q5 = query(
+        colRef4,
+      );
       const unsubscribeSnapshot = onSnapshot(q1, (snapShot) => {
         let list:any = [];
         snapShot.docs.forEach((doc) => {
@@ -41,7 +46,7 @@ const TileCards = () => {
         });
         setBookings(list.length);
       });
-      const unsubscribeSnapshot1 = onSnapshot(q1, (snapShot) => {
+      const unsubscribeSnapshot1 = onSnapshot(q2, (snapShot) => {
         let list:any = [];
         snapShot.docs.forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
@@ -62,11 +67,19 @@ const TileCards = () => {
         });
         setInvoice(list.length);
       });
+      const unsubscribeSnapshot4 = onSnapshot(q5, (snapShot) => {
+        let list:any = [];
+        snapShot.docs.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        setCostSharing(list.length);
+      });
       return () => {
         unsubscribeSnapshot();
         unsubscribeSnapshot1();
         unsubscribeSnapshot2();
         unsubscribeSnapshot3();
+        unsubscribeSnapshot4();
       };
     }catch(errors){
       console.log(errors)
@@ -99,23 +112,23 @@ const TileCards = () => {
         <div className='relative pt-5'>
         <Card className="p-2 cursor-pointer">
       <CardHeader className="flex flex-col items-end justify-between gap-3 space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">Cost Sharing</CardTitle>
-        <div className="text-2xl font-bold text-left">0</div>
-      </CardHeader>
-    </Card>
-    <div className='absolute top-0 left-2 p-5 bg-amber-400 rounded-md'>
-    <Banknote className="h-7 w-7 text-white" />
-    </div>
-        </div>
-        <div className='relative pt-5'>
-        <Card className="p-2 cursor-pointer">
-      <CardHeader className="flex flex-col items-end justify-between gap-3 space-y-0 pb-2">
         <CardTitle className="text-sm font-medium"> Invoices</CardTitle>
         <div className="text-2xl font-bold text-left">{invoice}</div>
       </CardHeader>
     </Card>
     <div className='absolute top-0 left-2 p-5 bg-orange-400 rounded-md'>
     <ClipboardPenLine className="h-7 w-7 text-white" />
+    </div>
+        </div>
+        <div className='relative pt-5'>
+        <Card className="p-2 cursor-pointer">
+      <CardHeader className="flex flex-col items-end justify-between gap-3 space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium"> Cost Sharing</CardTitle>
+        <div className="text-2xl font-bold text-left">{costsharing}</div>
+      </CardHeader>
+    </Card>
+    <div className='absolute top-0 left-2 p-5 bg-purple-400 rounded-md'>
+    <MonitorCheck className="h-7 w-7 text-white" />
     </div>
         </div>
     </div>

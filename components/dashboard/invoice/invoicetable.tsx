@@ -2,19 +2,7 @@
 
 import { db } from "@/lib/firebaseConfig";
 import React, { useState, useEffect } from 'react'
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
-import { Input } from "@/components/ui/input"
+
 import {
   Table,
   TableBody,
@@ -27,10 +15,10 @@ import {
   collection,
   query,
   onSnapshot,
-  limit,
-  where,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
-import { Loader } from 'lucide-react';
+import { Loader, Trash } from 'lucide-react';
 import Link from "next/link";
 
 
@@ -60,7 +48,14 @@ export function InvoiceTable() {
       console.error("Error fetching data:", error);
     }
   }, []);
- 
+  const deleteItem = async (id: any) => {
+    try {
+      await deleteDoc(doc(db, "invoice", id));
+      setData((prevData) => prevData.filter((items: any) => items.id !== id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
@@ -76,6 +71,7 @@ export function InvoiceTable() {
     <TableHead>Remarks</TableHead>
     <TableHead>Net Total</TableHead>
     <TableHead>More Details</TableHead>
+    <TableHead>Action</TableHead>
   </TableRow>
 </TableHeader>
 <TableBody>
@@ -95,6 +91,12 @@ export function InvoiceTable() {
                     Details
                   </Link>
                 </TableCell>
+                <TableCell>
+                    <Trash
+                      className="cursor-pointer text-red-700"
+                      onClick={(id) => deleteItem(item.id)}
+                    />
+                  </TableCell>
               </TableRow>
             ))
           ) : loading ? (
