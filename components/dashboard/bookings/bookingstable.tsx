@@ -69,6 +69,8 @@ export function DataTableDemo() {
               <TableHead>Vehicle Registration Number</TableHead>
               <TableHead>Manufacturer</TableHead>
               <TableHead>Model</TableHead>
+              <TableHead>Mileage</TableHead>
+              <TableHead>Chassis Number</TableHead>
               <TableHead>Fault</TableHead>
               <TableHead>Action</TableHead>
             </TableRow>
@@ -86,6 +88,8 @@ export function DataTableDemo() {
                   <TableCell>{item.carnumber}</TableCell>
                   <TableCell>{item.manufacturer}</TableCell>
                   <TableCell>{item.model}</TableCell>
+                  <TableCell>{item.mileage}</TableCell>
+                  <TableCell>{item.chassisnumber}</TableCell>
                   <TableCell className="truncate">
                     {item.faultdescription}
                   </TableCell>
