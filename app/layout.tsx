@@ -15,8 +15,11 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Admin Vehicle Management system",
-  description: "Vehicle Management System managed by an administrator",
+  title: "ADMIN-AVIC-CCTU MANAGEMENT SYSTEM",
+  description: "AVIC-CCTU management system managed by administrator",
+  icons:{
+    icon:'/images/CCTU_logo.png'
+ }
 };
 
 export default function RootLayout({
@@ -24,14 +27,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-  
-    // <html lang="en">
-    //   <body className={poppins.className}>
-    //     {children}
-    //     </body>
-    // </html>
- 
+  return ( 
     <ClerkProvider>
     <html lang="en">
       <body className={poppins.className}>
