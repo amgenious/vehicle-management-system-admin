@@ -8,7 +8,8 @@ import {
     Package,
     AudioWaveform,
     ClipboardPenLine,
-    MonitorCheck
+    MonitorCheck,
+    File
   } from "lucide-react"
 
 const SideBarLinks = () => {
@@ -75,6 +76,18 @@ const pathname = usePathname();
           >
             <ClipboardPenLine className="h-4 w-4" />
             Invoice
+          </Link>
+          <Link
+            href="/dashboard/servicereports"
+            className={clsx("flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all",
+            {
+              'bg-primary text-white text-muted': pathname === "/dashboard/servicereports",
+            },
+            ) 
+            }
+          >
+            <File className="h-4 w-4" />
+            Service Reports
           </Link>
         </nav>
       </div>

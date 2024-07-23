@@ -44,7 +44,7 @@ const NavBar= () => {
               Dashboard
             </Link>
             <Link
-              href="/dashboard/files"
+              href="/dashboard/bookings"
               className={clsx(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
                 {
@@ -56,7 +56,7 @@ const NavBar= () => {
               Bookings
             </Link>
             <Link
-              href="/dashboard/files"
+              href="/dashboard/servicetracker"
               className={clsx(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
                 {
@@ -68,7 +68,7 @@ const NavBar= () => {
               Service Tracker
             </Link>
             <Link
-              href="/dashboard/groups"
+              href="/dashboard/costsharing"
               className={clsx(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
                 {
@@ -81,7 +81,7 @@ const NavBar= () => {
             Cost Sharing
             </Link>
             <Link
-              href="/dashboard/settings"
+              href="/dashboard/invoice"
               className={clsx(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
                 {
@@ -92,6 +92,19 @@ const NavBar= () => {
             >
               <ClipboardPenLine className="h-4 w-4" />
               Invoice
+            </Link>
+            <Link
+              href="/dashboard/servicereports"
+              className={clsx(
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                {
+                  "bg-primary text-secondary text-mute ":
+                    pathname === "/dashboard/servicereports",
+                }
+              )}
+            >
+              <ClipboardPenLine className="h-4 w-4" />
+              Service Reports
             </Link>
           </nav>
           <div className="mt-auto">
