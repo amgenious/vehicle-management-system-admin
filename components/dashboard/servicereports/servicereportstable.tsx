@@ -16,6 +16,7 @@ import {
   onSnapshot,
   deleteDoc,
   doc,
+  orderBy,
 } from "firebase/firestore";
 import { Loader, Trash } from "lucide-react";
 import Link from "next/link";
@@ -26,7 +27,7 @@ const ServiceReportTable = () => {
     const colRef = collection(db, "customerservicereport");
     useEffect(() => {
       try {
-        const q1 = query(colRef);
+        const q1 = query(colRef,orderBy("timeStamps","desc"));
         const unsubscribeSnapshot = onSnapshot(q1, (snapShot) => {
           setLoading(true);
           setData([]);
@@ -83,7 +84,11 @@ const ServiceReportTable = () => {
               <TableCell>{item.phonenumber}</TableCell>
               <TableCell>{item.carnumber}</TableCell>
               <TableCell>{item.faultdescription}</TableCell>
-              <TableCell>{item.remarks}</TableCell>
+              <TableCell>  <ul>
+                {item.remarks.map((remark: { id: React.Key | null | undefined; value: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; }) => (
+                  <li key={remark.id}>{remark.value}</li>
+                ))}
+              </ul></TableCell>
               <TableCell className="bg-primary text-white text-center font-bold">
                 <Link href={`servicereports/${item.id}`}>
                   Details

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "ADMIN-AVIC-CCTU MANAGEMENT SYSTEM",
   description: "AVIC-CCTU management system managed by administrator",
   icons:{
-    icon:'/images/CCTU_logo.png'
+    icon:'CCTU_logo.png'
  }
 };
 

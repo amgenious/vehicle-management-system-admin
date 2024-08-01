@@ -60,7 +60,11 @@ const GetBookingById = async () => {
             <p className='font-semibold text-black mb-2 p-2 border-b border-primary'>Reported Time: {data?.reportingtime}</p>
             <p className='font-semibold text-black mb-2 p-2 border-b border-primary'>Employee Email: {data?.EmployeeEmail}</p>
             <p className='font-semibold text-black mb-2 p-2 border-b border-primary'>Fault: {data?.faultdescription} </p>
-            <p className='font-semibold text-black mb-2 p-2 '>Employee Servicing Report: {data?.remarks} </p>
+            <p className='font-semibold text-black mb-2 p-2 '>Employee Servicing Report:   <ul>
+                {data.remarks.map((remark: { id: React.Key | null | undefined; value: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; }) => (
+                  <li key={remark.id}>{remark.value}</li>
+                ))}
+              </ul></p>
             </div>
         </div>
      </div>

@@ -17,6 +17,7 @@ import {
   onSnapshot,
   deleteDoc,
   doc,
+  orderBy,
 } from "firebase/firestore";
 import { Loader, Trash } from 'lucide-react';
 import Link from "next/link";
@@ -29,7 +30,7 @@ export function InvoiceTable() {
   const colRef = collection(db, "invoice");
   useEffect(() => {
     try {
-      const q1 = query(colRef);
+      const q1 = query(colRef,orderBy("timeStamps","desc"),);
       const unsubscribeSnapshot = onSnapshot(q1, (snapShot) => {
         setLoading(true);
         setData([]);

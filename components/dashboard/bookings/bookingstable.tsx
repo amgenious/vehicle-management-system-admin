@@ -16,6 +16,7 @@ import {
   onSnapshot,
   deleteDoc,
   doc,
+  orderBy,
 } from "firebase/firestore";
 import { Loader, Trash } from "lucide-react";
 
@@ -25,7 +26,7 @@ export function DataTableDemo() {
   const colRef = collection(db, "bookings");
   useEffect(() => {
     try {
-      const q1 = query(colRef);
+      const q1 = query(colRef,orderBy("timeStamps","desc"),);
       const unsubscribeSnapshot = onSnapshot(q1, (snapShot) => {
         setLoading(true);
         setData([]);
@@ -67,7 +68,7 @@ export function DataTableDemo() {
               <TableHead>Client Name</TableHead>
               <TableHead>Phone Number</TableHead>
               <TableHead>Vehicle Registration Number</TableHead>
-              <TableHead>Manufacturer</TableHead>
+              <TableHead>ChassisNumber</TableHead>
               <TableHead>Model</TableHead>
               <TableHead>Mileage</TableHead>
           
@@ -86,8 +87,8 @@ export function DataTableDemo() {
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.phonenumber}</TableCell>
                   <TableCell>{item.carnumber}</TableCell>
-                  <TableCell>{item.manufacturer}</TableCell>
-                  <TableCell>{item.model}</TableCell>
+                  <TableCell>{item.chassisnumber}</TableCell>
+                  <TableCell>{item.makemodel}</TableCell>
                   <TableCell>{item.mileage}</TableCell>
                 
                   <TableCell className="truncate">

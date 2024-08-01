@@ -1,19 +1,7 @@
 "use client"
 import { db } from "@/lib/firebaseConfig";
 import React, { useState, useEffect } from "react";
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
-import { Input } from "@/components/ui/input"
+
 import {
   Table,
   TableBody,
@@ -28,6 +16,7 @@ import {
   onSnapshot,
   deleteDoc,
   doc,
+  orderBy,
 } from "firebase/firestore";
 import { Loader, Trash } from "lucide-react";
 
@@ -38,7 +27,7 @@ export function CostSharingTable() {
   const colRef = collection(db, "costsharing");
   useEffect(() => {
     try {
-      const q1 = query(colRef);
+      const q1 = query(colRef,orderBy("timeStamps","desc"),);
       const unsubscribeSnapshot = onSnapshot(q1, (snapShot) => {
         setLoading(true);
         setData([]);
@@ -85,6 +74,7 @@ export function CostSharingTable() {
     <TableHead>Item</TableHead>
     <TableHead>Quantity</TableHead>
     <TableHead>Rikpat(Distribution Price)</TableHead>
+    <TableHead>Other Services</TableHead>
     <TableHead>Retail Price</TableHead>
     <TableHead>Total Bill</TableHead>
     <TableHead>CCTU</TableHead>
@@ -105,6 +95,7 @@ export function CostSharingTable() {
               <TableCell>{item.item}</TableCell>
               <TableCell>{item.quantity}</TableCell>
               <TableCell>{item.rikpat}</TableCell>
+              <TableCell>{item.otherservices}</TableCell>
               <TableCell>{item.retailprice}</TableCell>
               <TableCell>{item.totalbill}</TableCell>
               <TableCell>{item.CCTU}</TableCell>

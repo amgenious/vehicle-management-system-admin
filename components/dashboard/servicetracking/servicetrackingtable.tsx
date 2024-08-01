@@ -16,6 +16,7 @@ import {
   onSnapshot,
   deleteDoc,
   doc,
+  orderBy,
 } from "firebase/firestore";
 import { Loader, Trash } from "lucide-react";
 
@@ -25,7 +26,7 @@ export function ServiceTrackingTable() {
   const colRef = collection(db, "servicetracker");
   useEffect(() => {
     try {
-      const q1 = query(colRef);
+      const q1 = query(colRef,orderBy("timeStamps","desc"));
       const unsubscribeSnapshot = onSnapshot(q1, (snapShot) => {
         setLoading(true);
         setData([]);
