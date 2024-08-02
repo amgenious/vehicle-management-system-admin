@@ -4,10 +4,10 @@ import { db } from '@/lib/firebaseConfig'
 import {
     getDoc
     ,doc,
+    collection,
     query,
     where,
     onSnapshot,
-    collection
 } from "firebase/firestore";
 import { Loader } from 'lucide-react'
 import {
@@ -18,7 +18,6 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { logo } from '@/public/images';
 
@@ -33,9 +32,9 @@ const InvoiceDetails = ({params}:any) => {
 }
     const id = params.id
     const [data, setData] = useState<DocumentData>({});
-    const [loading, setLoading] = useState(true);
     const [pdata, setPData] = useState<DocumentData>({});
     const [rdata, setRData] = useState([]);
+    const [loading, setLoading] = useState(true);
     const colRef = collection(db, "bookings");
    
 
@@ -86,90 +85,115 @@ const InvoiceDetails = ({params}:any) => {
         console.log("pData is null, second useEffect not triggered");
       }
     }, [pdata]);
-    
   return (
     <div  className='flex flex-col flex-1 h-full w-full bg-slate-100'>
-      <div className='w-full p-3 h-fit bg-white'>
+      <div className='w-full flex justify-between p-3 h-fit bg-white'>
+        <div>
         <p className='text-primary text-3xl font-black'>Invoice Details</p>
         <p className='font-medium text-xs italic'>Details about the Invoice</p>
+        </div>
     </div>
     {
         loading ? (
             <Loader size={40} className="animate-spin ml-2 text-primary text-center" />
         ):(
-          <div className='p-5 mt-5 bg-white'>
-          <div className='w-full flex justify-start items-center p-5 gap-5'>
-            <div>
-              <Image src={logo} alt='logo' priority/>
-            </div>
-            <div>
-              <h1 className='text-4xl font-bold'>CCTU VEHICLE SERVICE CENTER</h1>
-              <p className=''>Email: <u className='cursor-pointer font-semibold'>avic.center@cctu.edu.gh</u></p>
-              <div className='mt-5'>
-                <p>P.O.BOX DL 50 CAPE COST C/R GHANA</p>
-                <p className='font-semibold'>TEL: 0509687271/0537929495</p>
-              </div>
-            </div>
-          </div>
-          <h1 className='text-3xl font-bold uppercase'>Cash Invoice</h1>
-          <div className='w-full flex justify-between mt-3'>
-              <div>
-                <p className='font-bold'>Customer Name and Address</p>
-                <p className='font-semibold'> {data.Client_name}</p>
-                <p className='font-semibold'> P.O.BOX <span className='uppercase'>CCTU</span></p>
-                <p className='font-semibold'> Tel <span> 
-                  {rdata.map((item: any) => (
-                    item.phonenumber
-                  ))}
-                  </span></p>
-              </div>
-              <div>
-                <p className='font-semibold'>Date: <span className='font-bold'>{ String(Date()).slice(0,15)}</span></p>
-                <p className='font-semibold'>JOB No: <span className='font-bold'>{data.Job_number}</span></p>
-                <p className='font-semibold'>Car No: <span className='font-bold'>{data.Vehicle_Registration_Number}</span></p>
-                <p className='font-semibold'>Employee Email: <span className='font-bold'>{data.EmployeeEmail}</span></p>
-                <p className='font-semibold'>Manager: <span className='font-bold'>{data.manager}</span></p>
-              </div>
-          </div>
-          <div className='mt-3 flex flex-col gap-3'>
-          <p><span className='p-1 bg-primary text-white'>Make/Model: </span> <span className='font-bold pl-2'> {rdata.map((item: any) => (
-                     item.makemodel
-                  ))}</span></p>        
-          <p> <span className='p-1 bg-primary text-white '>Chassis Number: </span>  <span className='font-bold pl-2'> {rdata.map((item: any) => (
-                     item.chassisnumber
-                  ))}</span></p>        
-          </div>
-          <div className='mt-5'>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Parts Used</TableHead>
-                <TableHead>Quantity</TableHead>
-                <TableHead>Unit Price (Ghc)</TableHead>
-                <TableHead>Labour (Ghc)</TableHead>
-                <TableHead>Net Price (Ghc)</TableHead>
-               
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-                  <TableRow>
-                    <TableCell>{data.Parts_used}</TableCell>
-                    <TableCell>{data.Quantity}</TableCell>
-                    <TableCell>{data.Unit_Price}</TableCell>
-                    <TableCell>{data.Labour}</TableCell>
-                    <TableCell>{data.Net_Price}</TableCell>
-                  </TableRow>
-            </TableBody>
-          </Table>
-          </div>
-           {/* <p className='font-normal'>Employee Remarks: 
-                <ul>
-                    {data.Employeeremarks.map((remark: { id: React.Key | null | undefined; value: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; }) => (
-                      <li className='font-semibold' key={remark.id}>{remark.value}</li>
-                    ))}
-                  </ul>
-                </p> */}
+    <div className='p-5 mt-5 bg-white'>
+      <div className='w-full flex justify-start items-center p-1 gap-5'>
+        <div>
+          <Image src={logo} alt='logo' priority/>
         </div>
+        <div>
+          <h1 className='text-4xl font-bold'>CCTU VEHICLE SERVICE CENTER</h1>
+          <p className=''>Email: <u className='cursor-pointer font-semibold'>avic.center@cctu.edu.gh</u></p>
+          <div className='mt-5'>
+            <p>P.O.BOX DL 50 CAPE COST C/R GHANA</p>
+            <p className='font-semibold'>TEL: 0509687271/0537929495</p>
+          </div>
+        </div>
+      </div>
+      <h1 className='text-3xl font-bold uppercase'>Cash Invoice</h1>
+      <div className='w-full flex justify-between mt-3'>
+          <div className='border border-primary w-[50%]'>
+            <p className='font-bold  border-b border-primary p-1'>Customer Name and Address</p>
+            <p className='font-medium border-b border-primary p-1'>Client Name: <span className='font-bold'>{data.Client_name}</span></p>
+            <p className='font-medium border-primary border-b p-1'> Tel <span className='font-bold'> 
+              {rdata.map((item: any) => (
+                item.phonenumber
+              ))}
+              </span></p>
+          </div>
+          <div  className='border border-primary w-[50%]'>
+            <p className='font-medium border-b border-primary p-1'>Date: <span className='font-bold'>{ String(Date()).slice(0,15)}</span></p>
+            <p className='font-medium border-b border-primary p-1'>JOB No: <span className='font-bold'>{data.Job_number}</span></p>
+            <p className='font-medium border-b border-primary p-1'>Car No: <span className='font-bold'>{data.Vehicle_Registration_Number}</span></p>
+            <p className='font-medium border-b border-primary p-1'>Employee Email: <span className='font-bold'>{data.EmployeeEmail}</span></p>
+            <p className='font-medium  p-1'>Manager: <span className='font-bold'>{data.manager}</span></p>
+          </div>
+      </div>
+      <div className='mt-3 flex flex-col gap-3'>
+      <p><span className='p-1 bg-primary text-white'>Make/Model: </span> <span className='font-bold pl-2'> {rdata.map((item: any) => (
+                 item.makemodel
+              ))}</span></p>        
+      <p> <span className='p-1 bg-primary text-white '>Chassis Number: </span>  <span className='font-bold pl-2'> {rdata.map((item: any) => (
+                 item.chassisnumber
+              ))}</span></p>        
+      </div>
+      <div className='mt-5'>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Parts Used</TableHead>
+            <TableHead>Quantity</TableHead>
+            <TableHead>Unit Price (Ghc)</TableHead>
+            <TableHead className='text-end'>Net Price (Ghc)</TableHead>
+           
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+                {data.Employeeremarks.map((remark: { id: React.Key | null | undefined; value: string | number | bigint | boolean; parts_used:string; quantity:number;unit_price:number;net_price:number| React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; }) => (
+              <TableRow key={remark.id}>
+                <TableCell>{data.Parts_used}
+                   <li className='font-semibold'>{remark.parts_used}</li>
+              </TableCell>
+                <TableCell>{remark.quantity}</TableCell>
+                <TableCell>{remark.unit_price}</TableCell>
+                <TableCell className='font-semibold text-end'>{remark.net_price}</TableCell>
+              </TableRow>
+                ))}
+        </TableBody>
+      </Table>
+      <Table>
+        <TableHeader>
+          <TableRow className='bg-primary'>
+            <TableHead className='text-center text-white'>Description of Job</TableHead>
+            <TableHead className='text-end text-white'>Labour (Ghc)</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell className='text-center'><ul>
+                {data.Employeeremarks.map((remark: { id: React.Key | null | undefined; value: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; }) => (
+                  <li className='font-semibold' key={remark.id}>{remark.value}</li>
+                ))}
+              </ul></TableCell>
+            <TableCell className='text-end font-bold'>{data.Labour}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+      <Table>
+        <TableHeader>
+          <TableRow className='bg-primary'>
+            <TableHead className='text-end font-black text-white'>Total Net Price (Ghc)</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell className='text-end font-black'>{data.Net_Price}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+      </div>
+    </div>
       )
     }
       </div>
