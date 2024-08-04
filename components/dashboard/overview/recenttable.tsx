@@ -80,7 +80,13 @@ const RecentTable = () => {
                 <TableCell>{item.Client_name}</TableCell>
                 <TableCell>{item.Vehicle_Registration_Number}</TableCell>
                 <TableCell>{item.fault}</TableCell>
-                <TableCell>{item.Employeeremarks}</TableCell>
+                <TableCell>
+                <ul>
+                {item.Employeeremarks.map((remark: { id: React.Key | null | undefined; value: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; }) => (
+                  <li key={remark.id}>{remark.value}</li>
+                ))}
+              </ul>
+                </TableCell>
                 <TableCell>{item.Net_Price}</TableCell>
                 <TableCell className="bg-primary text-white text-center font-bold">
                   <Link href={`dashboard/invoice/${item.id}`}>
